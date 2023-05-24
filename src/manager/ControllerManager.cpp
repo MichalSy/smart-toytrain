@@ -1,8 +1,6 @@
 #pragma once
 
-#include <Arduino.h>
-
-XboxSeriesXControllerESP32_asukiaaa::Core xboxController;
+#include <XboxSeriesXControllerESP32_asukiaaa.hpp>
 
 using namespace std;
 
@@ -12,7 +10,11 @@ class ControllerManager
 private:
     ControllerManager() = default;
 
+    XboxSeriesXControllerESP32_asukiaaa::Core xboxController;
+
 public:
+    XboxControllerNotificationParser currentState;
+
     static ControllerManager *getInstance()
     {
         static ControllerManager instance;
@@ -33,42 +35,7 @@ public:
             {
                 Serial.println("waiting for first notification");
             }
-            else
-            {
-                // Serial.println("Address: " + xboxController.buildDeviceAddressStr());
-
-                // if (xboxController.xboxNotif.trigRT != 0)
-                // {
-                //     targetSpeed = xboxController.xboxNotif.trigRT / 1023.0 * 255.0;
-                // }
-                // else if (xboxController.xboxNotif.trigLT != 0)
-                // {
-                //     targetSpeed = -(xboxController.xboxNotif.trigLT / 1023.0 * 255.0);
-                // }
-                // else
-                // {
-                //     targetSpeed = 0;
-                // }
-
-                // Serial.println((String) "targetSpeed: " + targetSpeed + ", current: " + currentSpeed);
-
-                // if (currentSpeed > 0)
-                // {
-                //     digitalWrite(motor1Pin1, LOW);
-                //     digitalWrite(motor1Pin2, HIGH);
-                //     analogWrite(motorPwmSignal, currentSpeed);
-                // }
-                // else if (currentSpeed < 0)
-                // {
-                //     digitalWrite(motor1Pin1, HIGH);
-                //     digitalWrite(motor1Pin2, LOW);
-                //     analogWrite(motorPwmSignal, -currentSpeed);
-                // }
-                // else
-                // {
-                //     analogWrite(motorPwmSignal, 0);
-                // }
-            }
+            currentState = xboxController.xboxNotif;
         }
         else
         {
